@@ -7,6 +7,7 @@ Source: https://github.com/socai-io/jev-social
 License: MIT
 Local System One guide: https://socai-io.github.io/jev-social/local-system-one/
 Social research workflow guide: https://socai-io.github.io/jev-social/social-research/
+Privacy and data flow guide: https://socai-io.github.io/jev-social/privacy/
 
 ## What it does
 
@@ -105,6 +106,7 @@ No live benchmark results are published yet. After initialization, failed, parti
 
 - README and setup: https://github.com/socai-io/jev-social#readme
 - Instagram, TikTok, and LinkedIn workflow guide: https://socai-io.github.io/jev-social/social-research/
+- Privacy and data flow: https://socai-io.github.io/jev-social/privacy/
 - Real evidence report: https://github.com/socai-io/jev-social/blob/main/docs/example-report.md
 - TikTok search and media evidence: https://github.com/socai-io/jev-social/blob/main/docs/tiktok-evidence.md
 - OSSDrop award and live listing: https://ossdrop.com/tool/jev-social

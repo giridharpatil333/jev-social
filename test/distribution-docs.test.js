@@ -53,6 +53,7 @@ const publicDocs = [
   ["site/index.html", new URL("../site/index.html", import.meta.url)],
   ["site/local-system-one/index.html", new URL("../site/local-system-one/index.html", import.meta.url)],
   ["site/social-research/index.html", new URL("../site/social-research/index.html", import.meta.url)],
+  ["site/privacy/index.html", new URL("../site/privacy/index.html", import.meta.url)],
   ["site/llms.txt", new URL("../site/llms.txt", import.meta.url)],
 ];
 
@@ -392,6 +393,7 @@ test("the social research guide is shipped with exact platform and safety bounda
   );
   assert.ok(structuredData, "the social research guide must include JSON-LD");
   const graph = JSON.parse(structuredData[1])["@graph"];
+  const visibleGuide = normalizedVisibleText(guide);
   assert.ok(Array.isArray(graph));
   const article = graph.find((entry) => entry["@type"] === "TechArticle");
   const faq = graph.find((entry) => entry["@type"] === "FAQPage");
@@ -455,18 +457,87 @@ test("the social research guide is shipped with exact platform and safety bounda
     "does not post, like, follow, message, purchase, or change settings",
     "partial evidence",
   ]) {
-    assert.match(guide, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
+    assert.match(visibleGuide, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
   }
   assert.doesNotMatch(guide, /github\.com\/socai-io\/socai/);
   assert.doesNotMatch(llms, /github\.com\/socai-io\/socai/);
   assertNoAffirmativeOfflineClaim(guide);
   assert.match(sitemap, /https:\/\/socai-io\.github\.io\/jev-social\/social-research\//);
   assert.match(llms, /https:\/\/socai-io\.github\.io\/jev-social\/social-research\//);
-  assert.match(workflow, /mkdir -p _site\/assets\/platforms _site\/local-system-one _site\/social-research/);
+  assert.match(workflow, /mkdir -p _site\/assets\/platforms _site\/local-system-one _site\/social-research _site\/privacy/);
   assert.match(
     workflow,
     /cp site\/social-research\/index\.html _site\/social-research\//,
   );
+});
+
+test("the privacy guide publishes the exact provider and retention boundaries", async () => {
+  const [guide, sitemap, workflow, llms, landing, localGuide, socialGuide, styles] = await Promise.all([
+    readFile(new URL("../site/privacy/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../site/sitemap.xml", import.meta.url), "utf8"),
+    readFile(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8"),
+    readFile(new URL("../site/llms.txt", import.meta.url), "utf8"),
+    readFile(new URL("../site/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../site/local-system-one/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../site/social-research/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../site/styles.css", import.meta.url), "utf8"),
+  ]);
+  const structuredData = guide.match(
+    /<script type="application\/ld\+json">\s*([\s\S]*?)\s*<\/script>/,
+  );
+  assert.ok(structuredData, "the privacy guide must include JSON-LD");
+  const graph = JSON.parse(structuredData[1])["@graph"];
+  const visibleGuide = normalizedVisibleText(guide);
+  assert.ok(Array.isArray(graph));
+  const article = graph.find((entry) => entry["@type"] === "TechArticle");
+  const faq = graph.find((entry) => entry["@type"] === "FAQPage");
+  assert.equal(article?.url, "https://socai-io.github.io/jev-social/privacy/");
+  assert.equal(article?.headline, "Jev Social privacy and data flow");
+  assert.equal(article?.about?.["@type"], "SoftwareSourceCode");
+  assert.equal(article?.about?.codeRepository, "https://github.com/socai-io/jev-social");
+  assert.equal(faq?.mainEntity?.length, 4);
+
+  for (const expected of [
+    "Jev Social runs locally, but it is not an offline application",
+    "OpenRouter key to https://openrouter.ai/api/v1/auth/key for validation",
+    "A key entered interactively is saved in config.json",
+    "an existing OPENROUTER_API_KEY is used without writing a second copy",
+    "does not read or copy the browser cookie store directly",
+    "up to 400 characters",
+    "OPENROUTER_REPORT_MODEL=off",
+    "SOCAI_TELEMETRY=0",
+    "OPENROUTER_API_KEY",
+    "TYPESAFE_API_KEY",
+    "SOCAI_API_KEY",
+    "An independently running desktop process has its own process-level setting",
+    "audited socai v0.6.1 release",
+    "socai.io/v1/events",
+    "Axiom",
+    "stable install ID",
+    "full phone number",
+    "does not specify a server-side deletion or retention period",
+    "Provider-side storage and retention are governed by OpenRouter",
+    "local decision server has its own model, log, and retention behavior",
+    "~/.jev-social",
+    "0600",
+    "0700",
+    "No automatic retention or cleanup schedule",
+    "does not post, like, follow, message, purchase, or change settings",
+    "only when the research goal explicitly requests it",
+  ]) {
+    assert.match(visibleGuide, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
+  }
+  assertNoAffirmativeOfflineClaim(guide);
+  assert.doesNotMatch(guide, /github\.com\/socai-io\/socai(?:\.git)?(?=$|[\s/?#)"'<])/i);
+  assert.doesNotMatch(guide, /https:\/\/(?:www\.)?socai\.io/);
+  assert.match(sitemap, /https:\/\/socai-io\.github\.io\/jev-social\/privacy\//);
+  assert.match(llms, /Privacy and data flow guide: https:\/\/socai-io\.github\.io\/jev-social\/privacy\//);
+  assert.match(workflow, /mkdir -p _site\/assets\/platforms _site\/local-system-one _site\/social-research _site\/privacy/);
+  assert.match(workflow, /cp site\/privacy\/index\.html _site\/privacy\//);
+  assert.match(styles, /\.section-label\s*\{[^}]*color:\s*#605a55;/s);
+  for (const contents of [landing, localGuide, socialGuide]) {
+    assert.match(contents, /href="(?:\.\/|\.\.\/)privacy\/"/);
+  }
 });
 
 test("the local System One guide is shipped and keeps its local boundary honest", async () => {
