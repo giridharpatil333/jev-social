@@ -4,7 +4,7 @@
 
 **Jev is cool. Giving it a bounded view of social evidence is cooler.**
 
-[![GitHub stars](https://img.shields.io/github/stars/socai-io/jev-social?style=flat-square&label=stars)](https://github.com/socai-io/jev-social/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/socai-io/jev-social?style=flat-square&label=stars)](https://github.com/socai-io/jev-social)
 [![Skills installs](https://skills.sh/b/socai-io/jev-social)](https://skills.sh/socai-io/jev-social/jev-social)
 [![tests](https://github.com/socai-io/jev-social/actions/workflows/test.yml/badge.svg)](https://github.com/socai-io/jev-social/actions/workflows/test.yml)
 [![release](https://img.shields.io/github/v/release/socai-io/jev-social?style=flat-square&label=release)](https://github.com/socai-io/jev-social/releases/latest)
@@ -22,7 +22,7 @@ Jev chooses each next operation: search, open a particular post or profile, read
   <img src="https://raw.githubusercontent.com/socai-io/jev-social/main/docs/platforms/linkedin.svg" height="32" alt="LinkedIn">
 </p>
 
-[⭐ Star Jev Social](https://github.com/socai-io/jev-social/stargazers) · [Live site](https://socai-io.github.io/jev-social/) · [Social research guide](https://socai-io.github.io/jev-social/social-research/) · [Security and data flow](SECURITY.md) · [Real 64-second Jev report](docs/example-report.md) · [Recorded TikTok video evidence](docs/tiktok-evidence.md) · [Discord](https://discord.gg/CpQdA7bwt8) · [Jev](https://typesafe.ai/)
+[⭐ Star Jev Social](https://github.com/socai-io/jev-social) · [Live site](https://socai-io.github.io/jev-social/) · [Social research guide](https://socai-io.github.io/jev-social/social-research/) · [Security and data flow](SECURITY.md) · [Real 64-second Jev report](docs/example-report.md) · [Recorded TikTok video evidence](docs/tiktok-evidence.md) · [Discord](https://discord.gg/CpQdA7bwt8) · [Jev](https://typesafe.ai/)
 
 ## Try it
 
@@ -194,4 +194,4 @@ New contributors can start with the current [good first issues](https://github.c
 
 ---
 
-If this is useful, [star Jev Social](https://github.com/socai-io/jev-social/stargazers) or [join the Discord](https://discord.gg/CpQdA7bwt8).
+If this is useful, [star Jev Social](https://github.com/socai-io/jev-social) or [join the Discord](https://discord.gg/CpQdA7bwt8).

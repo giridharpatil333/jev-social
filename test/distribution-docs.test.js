@@ -309,6 +309,11 @@ test("the README keeps Jev Social promotion separate from the socai runtime", as
 
   assert.match(readme, /\bsocai CLI\b/);
   assert.match(readme, /star Jev Social/i);
+  assert.doesNotMatch(
+    readme,
+    /https:\/\/github\.com\/socai-io\/jev-social\/stargazers/i,
+    "public Star calls must lead to the repository page instead of the signed-out 404 route",
+  );
   assert.ok(sourceCheckout, "the README must retain a fenced source-checkout sequence");
   assert.deepEqual(
     sourceCheckout[1].split(/\r?\n/),
