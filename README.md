@@ -145,6 +145,8 @@ The skill pins the documented Jev Social CLI release, preserves its read-only an
 
 The released Jev Social Skill is also available in [Build with Claude](https://github.com/davepoon/buildwithclaude/tree/5864a032c1656350343fa982246ca9ffdd889c34/plugins/all-skills/skills/jev-social). That catalog copy pins the v0.1.10 runtime and preserves the same read-only boundaries.
 
+[Agentic Awesome Skills](https://github.com/sickn33/agentic-awesome-skills/blob/463b781eb48c8b3a48869090a2dbd56eeb41e7c3/skills/jev-social/SKILL.md) independently distributes a v0.1.10 catalog copy. Its catalog marks the workflow `critical` risk and requires explicit approval before the first remote package fetch; inclusion is not a security endorsement.
+
 [Hermes Jev Skills](https://github.com/kerpopule/hermes-jev-skills/blob/650090df0737d42806c90f6cecfea731ef753abb/skills/jev-social-research/SKILL.md) ships a separate bounded social-research workflow and links Jev Social as a related runnable implementation. It is not the Jev Social runtime and has its own privacy and execution contract.
 
 To work from a source checkout instead:

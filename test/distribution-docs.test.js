@@ -355,6 +355,12 @@ test("the README distinguishes an ecosystem catalog copy from a related workflow
   ));
   assert.match(ecosystem, /separate bounded social-research workflow/i);
   assert.match(ecosystem, /not the Jev Social runtime/i);
+  assert.ok(ecosystem.includes(
+    "https://github.com/sickn33/agentic-awesome-skills/blob/463b781eb48c8b3a48869090a2dbd56eeb41e7c3/skills/jev-social/SKILL.md",
+  ));
+  assert.match(ecosystem, /marks the workflow `critical` risk/i);
+  assert.match(ecosystem, /explicit approval before the first remote package fetch/i);
+  assert.match(ecosystem, /not a security endorsement/i);
   assert.doesNotMatch(ecosystem, /\b(?:accepted|official partner|endorsed by|partnership)\b/i);
 });
 
