@@ -29,7 +29,7 @@ Run this before research:
 npx github:socai-io/jev-social#baf3cd6aa4f9c881665c29ed29a10391f761760b status
 ```
 
-The commit is the tested runtime source included in release `v0.1.10`. Do not add an automatic-consent flag. If the package runner needs to download the source, identify `socai-io/jev-social` and the pinned commit to the user, then continue only after the user approves that download.
+The commit is the tested runtime source included in release `v0.1.11`. Do not add an automatic-consent flag. If the package runner needs to download the source, identify `socai-io/jev-social` and the pinned commit to the user, then continue only after the user approves that download.
 
 Require a configured decision provider, an installed socai CLI, and support for the requested platform. A ready local System One provider does not require an OpenRouter key. Treat the status payload as local diagnostics: do not reproduce configuration paths, executable paths, environment values, or credentials in the answer.
 
