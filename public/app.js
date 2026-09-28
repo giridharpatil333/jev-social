@@ -502,12 +502,12 @@ function evidenceKey(item, index) {
 
 function renderCard(item, index) {
   const card = element("article", "card");
+  const title = firstString(item, ["title", "caption", "description", "text", "name"]) || `Result ${index + 1}`;
   const frame = element("div", "media-frame");
-  renderMediaPreview(frame, item);
+  renderMediaPreview(frame, item, { title });
   card.append(frame);
 
   const body = element("div", "card-body");
-  const title = firstString(item, ["title", "caption", "description", "text", "name"]) || `Result ${index + 1}`;
   const author = authorName(item);
   body.append(element("h4", "", title));
   if (author) body.append(element("p", "author", author.startsWith("@") ? author : `@${author}`));
@@ -531,7 +531,7 @@ function renderCard(item, index) {
   return card;
 }
 
-function renderMediaPreview(frame, item, { showBadge = true } = {}) {
+function renderMediaPreview(frame, item, { showBadge = true, title = "captured evidence" } = {}) {
   const failed = new Set();
   const poster = posterSource(item);
   const tryNext = () => {
@@ -548,6 +548,7 @@ function renderMediaPreview(frame, item, { showBadge = true } = {}) {
       video.controls = true;
       video.preload = "metadata";
       video.playsInline = true;
+      video.setAttribute("aria-label", `Video preview for ${String(title).trim() || "captured evidence"}`);
       video.addEventListener("error", () => {
         failed.add(candidate.src);
         tryNext();
@@ -646,7 +647,7 @@ function renderTable(items) {
 
 function showDetail(item, title) {
   const media = element("div", "detail-media");
-  renderMediaPreview(media, item, { showBadge: false });
+  renderMediaPreview(media, item, { showBadge: false, title });
   const copy = element("div", "detail-copy");
   copy.append(element("h3", "", title));
   const description = firstString(item, ["description", "caption", "text", "title"]);
