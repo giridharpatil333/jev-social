@@ -9,6 +9,7 @@ import {
   nextPreviewCandidate,
   selectSummaryCards,
 } from "./evidence-preview.js";
+import { findEvidenceItems } from "./evidence-items.js";
 import { bindPromptButtons, platformLabel, updatePromptButtons } from "./prompts.js";
 import { parseRunRoute, resultHash } from "./run-route.js";
 import { deriveStatusView } from "./status.js";
@@ -358,7 +359,7 @@ function renderRun(run) {
   $("#action-list").replaceChildren(...(run.actions || []).map((step) => element("li", "", `${step.action.label} · ${step.status}`)));
   $("#action-history").classList.toggle("hidden", !run.actions?.length);
 
-  const items = findItems(run.result);
+  const items = findEvidenceItems(run.result);
   const hasEvidence = items.length > 0;
   elements.evidenceHeading.classList.toggle("hidden", !hasEvidence);
   elements.evidenceTable.classList.toggle("hidden", !hasEvidence);
@@ -689,19 +690,6 @@ function emptyResultMessage(run) {
   }
   if (run.result?.ok === false) return `socai returned ${run.result.status || run.result.reason || "an unavailable state"}. The complete output is below.`;
   return "socai completed successfully, but returned no displayable records.";
-}
-
-function findItems(value) {
-  if (Array.isArray(value)) return value.filter(isRecord);
-  if (!isRecord(value)) return [];
-  for (const key of ["items", "results", "cards", "videos", "posts", "notes", "data"]) {
-    if (Array.isArray(value[key])) return value[key].filter(isRecord).map((item) => isRecord(item.entity) ? { ...item, ...item.entity } : item);
-    if (isRecord(value[key])) {
-      const nested = findItems(value[key]);
-      if (nested.length) return nested;
-    }
-  }
-  return [];
 }
 
 async function streamApi(url, body, onEvent, signal) {
