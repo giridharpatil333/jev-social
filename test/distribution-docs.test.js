@@ -218,7 +218,7 @@ test("OpenClaw setup uses the verified immutable release Skill command", async (
   assert.deepEqual(
     [...new Set(installedRuntimePins)],
     [`github:socai-io/jev-social#${releaseCommit}`],
-    "the installed OpenClaw Skill must pin the v0.1.10 runtime",
+    "the installed OpenClaw Skill must pin the v0.1.11 runtime",
   );
   const skillSourcePackage = JSON.parse(execFileSync(
     "git",
