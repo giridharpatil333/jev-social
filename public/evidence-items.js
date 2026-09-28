@@ -1,7 +1,7 @@
 const CONTAINER_KEYS = ["items", "results", "cards", "videos", "posts", "notes", "data"];
 
 export function findEvidenceItems(value) {
-  if (Array.isArray(value)) return normalizeItems(value);
+  if (Array.isArray(value)) return value.filter(isRecord);
   if (!isRecord(value)) return [];
 
   for (const key of CONTAINER_KEYS) {

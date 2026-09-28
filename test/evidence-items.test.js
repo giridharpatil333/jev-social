@@ -27,3 +27,9 @@ test("findEvidenceItems preserves the first non-empty evidence container", () =>
   );
   assert.deepEqual(findEvidenceItems(null), []);
 });
+
+test("findEvidenceItems preserves direct array records without flattening wrappers", () => {
+  const wrapper = { locator: "post-1", entity: { title: "Nested title" } };
+
+  assert.deepEqual(findEvidenceItems([wrapper]), [wrapper]);
+});
