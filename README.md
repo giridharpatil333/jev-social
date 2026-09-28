@@ -133,7 +133,7 @@ For OpenCode, install the tested v0.1.11 skill into its natively discovered proj
 npx skills add https://github.com/socai-io/jev-social/tree/v0.1.11/skills/jev-social --agent opencode
 ```
 
-For OpenClaw, install the v0.1.11 skill from its immutable runtime commit into the current workspace:
+For OpenClaw, install the v0.1.11 skill from its immutable Skill commit into the current workspace:
 
 ```bash
 npx skills add https://github.com/socai-io/jev-social/tree/cd69b48415d7082d18b9f4dccd887e7d46926258/skills/jev-social --skill jev-social --agent openclaw --copy
