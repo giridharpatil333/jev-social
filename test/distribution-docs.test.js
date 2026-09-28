@@ -3,6 +3,8 @@ import { execFileSync } from "node:child_process";
 import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
+import { markdownLinkTargets, stripMarkup } from "../test-support/text.js";
+
 const packageJson = JSON.parse(
   await readFile(new URL("../package.json", import.meta.url), "utf8"),
 );
@@ -61,7 +63,7 @@ function normalizedVisibleText(contents) {
   const attributeValues = [...contents.matchAll(/\b(?:aria-label|content|title)="([^"]*)"/gi)]
     .map((match) => match[1])
     .join(" ");
-  return `${contents.replace(/<[^>]*>/g, " ")} ${attributeValues}`
+  return `${stripMarkup(contents, " ")} ${attributeValues}`
     .replace(/&(?:nbsp|ensp|emsp|thinsp|hyphen|ndash|mdash);/gi, " ")
     .replace(/&#(?:x[a-f\d]+|\d+);/gi, " ")
     .replace(/\s+/g, " ")
@@ -103,8 +105,7 @@ function extractKevCommands(contents) {
     "uv sync --extra serve",
     "uv run --extra serve python -m kev.serve ",
   ];
-  return contents
-    .replace(/<[^>]*>/g, "")
+  return stripMarkup(contents)
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter((line) => prefixes.some((prefix) => line.startsWith(prefix)));
@@ -121,8 +122,7 @@ function extractSimpleJevCommands(contents) {
     "python hf-server/hf_server.py ",
     "curl --fail http://127.0.0.1:8000/health",
   ];
-  return contents
-    .replace(/<[^>]*>/g, "")
+  return stripMarkup(contents)
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter((line) => prefixes.some((prefix) => line.startsWith(prefix)));
@@ -280,7 +280,7 @@ test("the Pages landing exposes current structured metadata and recorded evidenc
   assert.equal(software.softwareVersion, packageJson.version);
   assert.equal(software.codeRepository, "https://github.com/socai-io/jev-social");
   assert.equal(software.offers?.price, "0");
-  assert.ok(software.sameAs?.includes("https://ossdrop.com/tool/jev-social"));
+  assert.ok(software.sameAs?.some((url) => url === "https://ossdrop.com/tool/jev-social"));
 
   for (const expected of [
     "docs/example-report.md",
@@ -326,12 +326,9 @@ test("the README keeps Jev Social promotion separate from the socai runtime", as
     ],
   );
   assert.match(readme, /On Linux,[^.]+(?:PATH|SOCAI_BIN)[^.]+onboarding\./);
-  assert.ok(readme.includes(
-    '[good first issues](https://github.com/socai-io/jev-social/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22)',
-  ));
-  assert.ok(readme.includes(
-    "[CONTRIBUTING.md](https://github.com/socai-io/jev-social/blob/main/CONTRIBUTING.md)",
-  ));
+  const readmeTargets = markdownLinkTargets(readme);
+  assert.ok(readmeTargets.some((url) => url === "https://github.com/socai-io/jev-social/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22"));
+  assert.ok(readmeTargets.some((url) => url === "https://github.com/socai-io/jev-social/blob/main/CONTRIBUTING.md"));
   assert.doesNotMatch(
     readme,
     /https?:\/\/(?:www\.)?github\.com\/socai-io\/socai(?:\.git)?(?=$|[\s/?#)"'<])/i,
@@ -346,18 +343,13 @@ test("the README distinguishes an ecosystem catalog copy from a related workflow
   const ecosystem = markdownH2Section(readmeContents, "Ecosystem");
 
   assert.ok(ecosystem, "the README must expose the ecosystem catalog copy");
-  assert.ok(ecosystem.includes(
-    "https://github.com/davepoon/buildwithclaude/tree/5864a032c1656350343fa982246ca9ffdd889c34/plugins/all-skills/skills/jev-social",
-  ));
+  const ecosystemTargets = markdownLinkTargets(ecosystem);
+  assert.ok(ecosystemTargets.some((url) => url === "https://github.com/davepoon/buildwithclaude/tree/5864a032c1656350343fa982246ca9ffdd889c34/plugins/all-skills/skills/jev-social"));
   assert.match(ecosystem, /pins the v0\.1\.10 runtime/i);
-  assert.ok(ecosystem.includes(
-    "https://github.com/kerpopule/hermes-jev-skills/blob/650090df0737d42806c90f6cecfea731ef753abb/skills/jev-social-research/SKILL.md",
-  ));
+  assert.ok(ecosystemTargets.some((url) => url === "https://github.com/kerpopule/hermes-jev-skills/blob/650090df0737d42806c90f6cecfea731ef753abb/skills/jev-social-research/SKILL.md"));
   assert.match(ecosystem, /separate bounded social-research workflow/i);
   assert.match(ecosystem, /not the Jev Social runtime/i);
-  assert.ok(ecosystem.includes(
-    "https://github.com/sickn33/agentic-awesome-skills/blob/463b781eb48c8b3a48869090a2dbd56eeb41e7c3/skills/jev-social/SKILL.md",
-  ));
+  assert.ok(ecosystemTargets.some((url) => url === "https://github.com/sickn33/agentic-awesome-skills/blob/463b781eb48c8b3a48869090a2dbd56eeb41e7c3/skills/jev-social/SKILL.md"));
   assert.match(ecosystem, /marks the workflow `critical` risk/i);
   assert.match(ecosystem, /explicit approval before the first remote package fetch/i);
   assert.match(ecosystem, /not a security endorsement/i);

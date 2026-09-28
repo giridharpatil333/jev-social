@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
+import { stripMarkup } from "../test-support/text.js";
+
 const indexHtml = await readFile(
   new URL("../public/index.html", import.meta.url),
   "utf8",
@@ -17,10 +19,6 @@ function elementById(html, id) {
     new RegExp(`<([a-z0-9]+)\\b[^>]*\\bid="${id}"[^>]*>([\\s\\S]*?)</\\1>`, "i"),
   );
   return match ? match[2] : null;
-}
-
-function stripTags(text) {
-  return text.replace(/<[^>]*>/g, "").trim();
 }
 
 test("the evidence table has a non-empty accessible name built from the existing heading", () => {
@@ -47,7 +45,7 @@ test("the evidence table has a non-empty accessible name built from the existing
     .map((id) => {
       const content = elementById(indexHtml, id);
       assert.ok(content !== null, `expected an element with id="${id}" referenced by aria-labelledby`);
-      return stripTags(content);
+      return stripMarkup(content).trim();
     })
     .join(" ")
     .trim();

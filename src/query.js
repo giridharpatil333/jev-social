@@ -44,7 +44,8 @@ export function extractSearchQuery(request) {
 function cleanTopic(value) {
   return value
     .trim()
-    .replace(/^["'“‘]+|["'”’]+$/g, "")
+    .replace(/^["'“‘]+/, "")
+    .replace(/["'”’]+$/, "")
     .replace(/\s+please$/i, "")
     .replace(/[。.!?？]+$/g, "")
     .trim();
