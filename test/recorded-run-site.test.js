@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-const [page, script, styles, landing, sitemap, llms, workflow, report] = await Promise.all([
+const [page, script, styles, landing, sitemap, llms, workflow, report, readme] = await Promise.all([
   readFile(new URL("../site/recorded-run/index.html", import.meta.url), "utf8"),
   readFile(new URL("../site/recorded-run/replay.js", import.meta.url), "utf8"),
   readFile(new URL("../site/recorded-run/replay.css", import.meta.url), "utf8"),
@@ -13,6 +13,7 @@ const [page, script, styles, landing, sitemap, llms, workflow, report] = await P
   readFile(new URL("../site/llms.txt", import.meta.url), "utf8"),
   readFile(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8"),
   readFile(new URL("../docs/example-report.md", import.meta.url), "utf8"),
+  readFile(new URL("../README.md", import.meta.url), "utf8"),
 ]);
 
 function cardFor(id) {
@@ -95,6 +96,10 @@ test("the replay progressively reveals evidence and remains accessible", () => {
 
 test("the public site exposes and deploys the recorded run", () => {
   assert.match(landing, /href=["']\.\/recorded-run\/["']/i);
+  assert.match(
+    readme,
+    /\[Watch the recorded run\]\(https:\/\/socai-io\.github\.io\/jev-social\/recorded-run\/\)/,
+  );
   assert.match(sitemap, /https:\/\/socai-io\.github\.io\/jev-social\/recorded-run\//);
   assert.match(
     sitemap,
