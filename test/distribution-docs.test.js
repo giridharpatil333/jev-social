@@ -342,6 +342,22 @@ test("the README keeps Jev Social promotion separate from the socai runtime", as
   assert.doesNotMatch(readme, /^socai\s+(?:instagram|tiktok|linkedin)\s+/im);
 });
 
+test("the README distinguishes an ecosystem catalog copy from a related workflow", () => {
+  const ecosystem = markdownH2Section(readmeContents, "Ecosystem");
+
+  assert.ok(ecosystem, "the README must expose the ecosystem catalog copy");
+  assert.ok(ecosystem.includes(
+    "https://github.com/davepoon/buildwithclaude/tree/5864a032c1656350343fa982246ca9ffdd889c34/plugins/all-skills/skills/jev-social",
+  ));
+  assert.match(ecosystem, /pins the v0\.1\.10 runtime/i);
+  assert.ok(ecosystem.includes(
+    "https://github.com/kerpopule/hermes-jev-skills/blob/650090df0737d42806c90f6cecfea731ef753abb/skills/jev-social-research/SKILL.md",
+  ));
+  assert.match(ecosystem, /separate bounded social-research workflow/i);
+  assert.match(ecosystem, /not the Jev Social runtime/i);
+  assert.doesNotMatch(ecosystem, /\b(?:accepted|official partner|endorsed by|partnership)\b/i);
+});
+
 test("the local UI keeps project links scoped to Jev Social", async () => {
   const landing = await readFile(new URL("../public/index.html", import.meta.url), "utf8");
 
