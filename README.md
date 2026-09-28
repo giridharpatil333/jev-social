@@ -2,7 +2,7 @@
 
 # Jev Social — browser-grounded social research
 
-**Jev is cool. Giving it a bounded view of social evidence is cooler.**
+**Turn Instagram, TikTok, and LinkedIn into source-cited reports through your own browser.**
 
 [![GitHub stars](https://img.shields.io/github/stars/socai-io/jev-social?style=flat-square&label=stars)](https://github.com/socai-io/jev-social)
 [![Skills installs](https://skills.sh/b/socai-io/jev-social)](https://skills.sh/socai-io/jev-social/jev-social)
