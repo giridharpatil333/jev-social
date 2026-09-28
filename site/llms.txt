@@ -8,6 +8,7 @@ License: MIT
 Local System One guide: https://socai-io.github.io/jev-social/local-system-one/
 Social research workflow guide: https://socai-io.github.io/jev-social/social-research/
 Privacy and data flow guide: https://socai-io.github.io/jev-social/privacy/
+Recorded run replay: https://socai-io.github.io/jev-social/recorded-run/
 
 ## What it does
 
@@ -24,6 +25,8 @@ The choice set contains only operations supported by the installed socai CLI and
 
 Recorded output example: https://github.com/socai-io/jev-social/blob/main/docs/example-report.md
 Recorded TikTok search and media evidence: https://github.com/socai-io/jev-social/blob/main/docs/tiktok-evidence.md
+
+The public recorded-run page replays the sanitized September 18, 2026 Instagram artifact. It makes no live social-platform request, does not control Chrome, and must not be interpreted as a benchmark or current result.
 
 ## Supported operations
 
