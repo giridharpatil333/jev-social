@@ -11,10 +11,6 @@ import { saveOnboarding } from "../src/onboard.js";
 import { probeSocai } from "../src/socai.js";
 import { startServer } from "../src/server.js";
 
-const VERSION = JSON.parse(
-  readFileSync(new URL("../package.json", import.meta.url), "utf8"),
-).version;
-
 const HELP = `jev-social — Jev-directed social research through socai CLI
 
 Usage:
@@ -48,7 +44,10 @@ try {
   if (["help", "--help", "-h"].includes(command)) {
     console.log(HELP);
   } else if (["version", "--version", "-v"].includes(command)) {
-    console.log(VERSION);
+    const packageJson = JSON.parse(
+      readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+    );
+    console.log(packageJson.version);
   } else if (command === "serve") {
     await loadLocalEnv();
     const flags = parseArgs(rest);
