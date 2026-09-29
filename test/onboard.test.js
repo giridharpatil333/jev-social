@@ -115,10 +115,17 @@ test("resolveSocaiInstallDecision correctly handles non-interactive, interactive
     "Explicit --skip-install must return false",
   );
 
-  // 6. Already installed -> false
+  // 6. Already installed -> false (when install is false)
   assert.equal(
     resolveSocaiInstallDecision({ installed: true, install: false, skipInstall: false, isTTY: true }),
     false,
-    "Already installed CLI must not trigger reinstall",
+    "Already installed CLI must not trigger auto-reinstall without --install",
+  );
+
+  // 7. Explicit --install when already installed -> true (reinstall semantics)
+  assert.equal(
+    resolveSocaiInstallDecision({ installed: true, install: true, skipInstall: false, isTTY: false }),
+    true,
+    "Explicit --install when already installed must return true to preserve reinstall semantics",
   );
 });

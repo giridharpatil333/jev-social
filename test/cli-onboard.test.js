@@ -6,21 +6,26 @@ import { join } from "node:path";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
+const forbidFetchHook = new URL("../test-support/forbid-fetch.js", import.meta.url);
 
 test("non-interactive onboard subprocess does not attempt socai CLI installation without --install", () => {
   const directory = mkdtempSync(join(tmpdir(), "jev-social-subprocess-"));
   try {
-    const result = spawnSync(process.execPath, ["bin/jev-social.js", "onboard", "--no-verify"], {
-      cwd: root,
-      encoding: "utf8",
-      env: {
-        ...process.env,
-        JEV_SOCIAL_HOME: directory,
-        SOCAI_BIN: join(directory, "missing-socai"),
-        OPENROUTER_API_KEY: "dummy-key-123",
+    const result = spawnSync(
+      process.execPath,
+      ["--import", forbidFetchHook.href, "bin/jev-social.js", "onboard", "--no-verify"],
+      {
+        cwd: root,
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          JEV_SOCIAL_HOME: directory,
+          SOCAI_BIN: join(directory, "missing-socai"),
+          OPENROUTER_API_KEY: "dummy-key-123",
+        },
+        input: "",
       },
-      input: "",
-    });
+    );
 
     assert.equal(result.status, 0, `Expected exit status 0, stderr: ${result.stderr}`);
     assert.match(result.stdout, /socai CLI: not ready/u);
