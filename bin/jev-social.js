@@ -118,7 +118,7 @@ async function onboard(flags) {
   const proposed = { ...current, ...(flags.socaiBin ? { socaiBin: flags.socaiBin } : {}) };
   const before = await probeSocai(proposed);
   let installCli = Boolean(flags.install);
-  if (!before.installed && !flags.skipInstall && !flags.install) {
+  if (!before.installed && !flags.skipInstall && !flags.install && stdin.isTTY) {
     installCli = await promptYesNo("socai CLI was not found. Install the official release now?", true);
   }
 
@@ -178,7 +178,7 @@ function parseArgs(args) {
 }
 
 async function promptYesNo(question, defaultYes) {
-  if (!stdin.isTTY) return defaultYes;
+  if (!stdin.isTTY) return false;
   const rl = readline.createInterface({ input: stdin, output: stdout });
   try {
     const answer = (await rl.question(`${question} ${defaultYes ? "[Y/n]" : "[y/N]"} `)).trim().toLowerCase();

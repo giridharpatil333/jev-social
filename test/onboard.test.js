@@ -62,3 +62,19 @@ test("saveOnboarding reports the resolved socai bin path for CLI output", async 
     await rm(directory, { recursive: true, force: true });
   }
 });
+
+test("onboarding in non-interactive environment does not install missing socai CLI unless installCli is explicitly true", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "jev-social-onboard-noninteractive-"));
+  const env = {
+    ...process.env,
+    JEV_SOCIAL_HOME: directory,
+    OPENROUTER_API_KEY: String(103),
+    SOCAI_BIN: path.join(directory, "missing-socai"),
+  };
+  try {
+    const result = await saveOnboarding({ verify: false, installCli: false, env });
+    assert.equal(result.socai.installed, false, "socai CLI must not be installed when installCli is false");
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
