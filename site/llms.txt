@@ -44,7 +44,7 @@ The HTTP server listens on `127.0.0.1`. State-changing requests require exact sa
 
 ## Run locally
 
-Requirements: Node.js 20+, a current socai CLI, a Chrome session that can access the selected platform, and either an OpenRouter API key with Jev access or a loopback TypeSafe-compatible decision endpoint such as Kev or Simple Jev.
+Requirements: Node.js 22+, a current socai CLI, a Chrome session that can access the selected platform, and either an OpenRouter API key with Jev access or a loopback TypeSafe-compatible decision endpoint such as Kev or Simple Jev.
 
 ```bash
 npx github:socai-io/jev-social#v0.1.12 onboard

@@ -26,7 +26,7 @@ Jev chooses each next operation: search, open a particular post or profile, read
 
 ## Try it
 
-With Node 20+ and Chrome already signed in to Instagram, TikTok, or LinkedIn:
+With Node 22+ and Chrome already signed in to Instagram, TikTok, or LinkedIn:
 
 ```bash
 npx github:socai-io/jev-social#v0.1.12 onboard
@@ -106,7 +106,7 @@ No live benchmark results are published yet. The commands, row contract, timing 
 
 ## Run it
 
-Node 20+, a decision provider (OpenRouter Jev or a loopback Kev server), and a current `socai CLI`.
+Node 22+, a decision provider (OpenRouter Jev or a loopback Kev server), and a current `socai CLI`.
 
 Fastest OpenRouter path — no repository clone required. With the default OpenRouter provider, onboarding prompts for the OpenRouter key. On macOS and Windows, onboarding can also install the official `socai CLI` when it is missing. On Linux, install a current `socai CLI` from source first, then put it on `PATH` or set `SOCAI_BIN`.
 
