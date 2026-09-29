@@ -103,7 +103,7 @@ test("the public site exposes and deploys the recorded run", () => {
   assert.match(sitemap, /https:\/\/socai-io\.github\.io\/jev-social\/recorded-run\//);
   assert.match(
     sitemap,
-    /<loc>https:\/\/socai-io\.github\.io\/jev-social\/<\/loc>\s*<lastmod>2026-09-28<\/lastmod>/,
+    /<loc>https:\/\/socai-io\.github\.io\/jev-social\/<\/loc>\s*<lastmod>2026-09-29<\/lastmod>/,
   );
   assert.match(llms, /Recorded run replay:\s*https:\/\/socai-io\.github\.io\/jev-social\/recorded-run\//i);
   assert.match(workflow, /mkdir -p[^\n]*_site\/recorded-run/);
