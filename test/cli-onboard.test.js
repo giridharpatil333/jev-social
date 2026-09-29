@@ -21,7 +21,7 @@ test("non-interactive onboard subprocess does not attempt socai CLI installation
           ...process.env,
           JEV_SOCIAL_HOME: directory,
           SOCAI_BIN: join(directory, "missing-socai"),
-          OPENROUTER_API_KEY: "dummy-key-123",
+          OPENROUTER_API_KEY: String(104),
         },
         input: "",
       },
