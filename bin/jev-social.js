@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-import readline from "node:readline/promises";
+import { readFileSync } from "node:fs";
 import { stdin, stdout } from "node:process";
+import readline from "node:readline/promises";
 import { runSearch } from "../src/app.js";
 import { getConfigPath, readConfig, resolveApiKey } from "../src/config.js";
 import { resolveDecisionProvider } from "../src/decision-provider.js";
@@ -14,6 +15,7 @@ const HELP = `jev-social — Jev-directed social research through socai CLI
 
 Usage:
   jev-social                                      Start local preview
+  jev-social --version                            Show installed version
   jev-social onboard [options]                    Optional manual configuration
   jev-social status                               Show local readiness
   jev-social search <query> [options]             Run one search
@@ -38,14 +40,25 @@ Local decision provider (environment only):
 `;
 
 try {
-  await loadLocalEnv();
   const [command = "serve", ...rest] = process.argv.slice(2);
   if (["help", "--help", "-h"].includes(command)) {
     console.log(HELP);
+  } else if (["version", "--version", "-v"].includes(command)) {
+    let packageJson;
+    try {
+      packageJson = JSON.parse(
+        readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+      );
+    } catch {
+      throw new Error("Could not read Jev Social version.");
+    }
+    console.log(packageJson.version);
   } else if (command === "serve") {
+    await loadLocalEnv();
     const flags = parseArgs(rest);
     await startServer({ port: flags.port || 8766, open: !flags.noOpen });
   } else if (command === "status") {
+    await loadLocalEnv();
     const config = await readConfig();
     const provider = resolveDecisionProvider();
     console.log(
@@ -62,8 +75,10 @@ try {
       ),
     );
   } else if (command === "onboard") {
+    await loadLocalEnv();
     await onboard(parseArgs(rest));
   } else if (command === "search") {
+    await loadLocalEnv();
     const flags = parseArgs(rest);
     const query = flags._.join(" ").trim();
     const run = await runSearch(
