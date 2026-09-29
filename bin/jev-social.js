@@ -44,9 +44,14 @@ try {
   if (["help", "--help", "-h"].includes(command)) {
     console.log(HELP);
   } else if (["version", "--version", "-v"].includes(command)) {
-    const packageJson = JSON.parse(
-      readFileSync(new URL("../package.json", import.meta.url), "utf8"),
-    );
+    let packageJson;
+    try {
+      packageJson = JSON.parse(
+        readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+      );
+    } catch {
+      throw new Error("Could not read Jev Social version.");
+    }
     console.log(packageJson.version);
   } else if (command === "serve") {
     await loadLocalEnv();
