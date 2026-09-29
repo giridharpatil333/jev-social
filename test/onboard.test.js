@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { readConfig } from "../src/config.js";
-import { saveOnboarding } from "../src/onboard.js";
+import { saveOnboarding, resolveSocaiInstallDecision } from "../src/onboard.js";
 
 test("environment-only OpenRouter keys are not persisted during onboarding", async () => {
   const directory = await mkdtemp(path.join(os.tmpdir(), "jev-social-onboard-"));
@@ -77,4 +77,48 @@ test("onboarding in non-interactive environment does not install missing socai C
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
+});
+
+test("resolveSocaiInstallDecision correctly handles non-interactive, interactive, explicit, and skip flags", () => {
+  // 1. Non-interactive default (isTTY: false, no flags) -> false
+  assert.equal(
+    resolveSocaiInstallDecision({ installed: false, install: false, skipInstall: false, isTTY: false }),
+    false,
+    "Non-interactive default must not install missing socai CLI",
+  );
+
+  // 2. Interactive empty answer (isTTY: true, answer: "") -> true
+  assert.equal(
+    resolveSocaiInstallDecision({ installed: false, install: false, skipInstall: false, isTTY: true, answer: "" }),
+    true,
+    "Interactive empty answer must default to true ([Y/n])",
+  );
+
+  // 3. Interactive negative answer (isTTY: true, answer: "n") -> false
+  assert.equal(
+    resolveSocaiInstallDecision({ installed: false, install: false, skipInstall: false, isTTY: true, answer: "n" }),
+    false,
+    "Interactive 'n' answer must return false",
+  );
+
+  // 4. Explicit --install -> true regardless of isTTY
+  assert.equal(
+    resolveSocaiInstallDecision({ installed: false, install: true, skipInstall: false, isTTY: false }),
+    true,
+    "Explicit --install must return true even when non-interactive",
+  );
+
+  // 5. Explicit --skip-install -> false regardless of isTTY
+  assert.equal(
+    resolveSocaiInstallDecision({ installed: false, install: false, skipInstall: true, isTTY: true, answer: "y" }),
+    false,
+    "Explicit --skip-install must return false",
+  );
+
+  // 6. Already installed -> false
+  assert.equal(
+    resolveSocaiInstallDecision({ installed: true, install: false, skipInstall: false, isTTY: true }),
+    false,
+    "Already installed CLI must not trigger reinstall",
+  );
 });
